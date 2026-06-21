@@ -90,6 +90,20 @@ the whole brief.
   needed. The goal is to spare the reader reverse-engineering, not to
   paper every line.
 
+## GitHub bodies
+
+- **Write PR, issue, and comment bodies as long flowing lines** — don't
+  hard-wrap at ~80 columns the way you would for source code or commit
+  messages. GitHub's markdown in these contexts honors a single newline as a
+  hard `<br>` (unlike rendered `.md` files in a repo, where it folds into a
+  space), so hard-wrapping makes the rendered prose look like fixed-width
+  text with a ragged right margin. One paragraph = one line; blank lines
+  between paragraphs; leave headings / lists / fenced code blocks alone
+  (they work either way). Quick fix when caught after the fact: join lines
+  per paragraph and re-push with `gh pr edit <num> --body-file …`.
+- Exceptions that stay hard-wrapped: commit messages (50/72 convention) and
+  source code comments (~70 cols).
+
 ## Verification & commit discipline
 
 - **Test before fix.** Write the failing test first, then make it pass.
