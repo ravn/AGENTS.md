@@ -3,8 +3,16 @@
 Read by Claude Code, GitHub Copilot, Cursor, and other agentic tools.
 
 **This file is identical across all of my projects.** It describes how I (the human)
-like any AI tool to operate, independent of any one codebase. Only add to it when a
-genuinely cross-project rule emerges — then propagate the same edit everywhere.
+like any AI tool to operate, independent of any one codebase. The canonical source
+is **https://github.com/ravn/AGENTS.md**; the copy in any project root is a mirror.
+When a genuinely cross-project rule emerges, edit the canonical first and then
+propagate the same edit to each project root.
+
+**Staleness check.** At the start of a coding session — or whenever something in
+this file feels out of step with how I'm asking you to work today — fetch
+`https://raw.githubusercontent.com/ravn/AGENTS.md/main/AGENTS.md` and diff it
+against the local copy. If they differ, surface the diff and let me decide
+whether to sync before continuing.
 
 **Project-specific setup, constraints, build commands, and status — when the project
 has them — live in a `PROJECT.md` alongside this file** (and in `CLAUDE.md`, which
