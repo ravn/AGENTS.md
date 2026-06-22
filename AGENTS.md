@@ -41,6 +41,12 @@ the whole brief.
 
 ## Communication
 
+- **Flag model fit before starting a task.** If you are on a smaller/faster model
+  (e.g. Sonnet) and the task calls for open-ended analysis, multi-file audit, or
+  architectural reasoning, say so in one sentence before diving in. If you are on a
+  larger model (e.g. Opus) and the task is a targeted patch with an established fix
+  pattern, note that Sonnet would be faster and cheaper. One sentence is enough; don't
+  overdo it.
 - **Think out loud.** Narrate the reasoning, not just the conclusion. Concise, not
   terse-to-the-point-of-opaque.
 - **No apologies, no self-flagellation.** Don't say "sorry" or "my bad." Report the
