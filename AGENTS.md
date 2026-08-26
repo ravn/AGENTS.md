@@ -49,8 +49,11 @@ the whole brief.
   substantive answer.
 - **No aphorisms.** Don't wrap a decision in a maxim ("less is more"). State the
   decision and the reason.
-- **State as fact only what you've verified — this one matters a lot to me.** Mark
-  each claim *known* (verified this session from code/docs/tests/observation) vs.
+- **Never guess — always verify, or say "I don't know."** State as fact only what
+  you've verified — this one matters a lot to me. If a claim isn't verified, either
+  go verify it before stating it, or say plainly that you don't know / haven't
+  checked. Never present an inference, memory, or pattern-match as established fact.
+  Mark each claim *known* (verified this session from code/docs/tests/observation) vs.
   *guessed* (inferred / pattern-matched). Surface any doubt explicitly and offer to
   research it; never round a strong hypothesis up to certainty. **Familiarity is not
   certainty** — "this looks like a bug class I've seen" is a guess, however strong the
@@ -139,9 +142,32 @@ the whole brief.
   capture the "before" first.
 - **Verify before "done."** Prove it works — run the tests, check the logs, diff
   behavior between the baseline and your change. Never mark complete on assumption.
+- **Ask where "expected" comes from — the one question that catches a whole class
+  of false "verified."** Before calling anything verified, ask: *what is my ground
+  truth, and is it independent of the thing under test?* If "expected" was produced
+  by the same pipeline, tool, or code path as "actual" — or if my check is "all N
+  builds/variants agree" — I have an **equivalence** oracle, not a **correctness**
+  one. N artifacts agreeing proves they compute the *same* thing, not the *right*
+  thing; they can all be identically wrong. Break the loop with a source that does
+  *not* share the failure mode: an independent reimplementation (float vs
+  fixed-point, brute force vs optimised), a hand-worked example, a known-good
+  reference render, or a domain sanity check ("does this output even *look* like
+  the thing it claims to be?"). (2026-08-12: a fixed-point Mandelbrot was declared
+  correct because DR C and three Open Watcom builds produced byte-identical output
+  and matched a stored baseline — but all four shared a 16-bit `px*640` overflow
+  from the same source, so the right third was blank in every build; the user
+  caught it by eye in one glance. The check "all builds agree" was circular.)
 - **Building is not behaving.** A clean compile / smaller binary is not proof of
   correctness. For behavior-affecting changes, run the runtime/value oracle before
   committing.
+- **Verify config/tooling fixes with the real artifact, not reasoning.** A CMake /
+  clangd / include-path fix is not done because the compiler resolves the header, or
+  because the `-I` "should" work. Generate the actual compile database
+  (`cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON`) and confirm the **failing file's** real
+  flags, then run them. Relative `-I` in `.clangd` resolves from the source dir (not
+  the config dir), so it silently fails — prefer absolute `${CMAKE_CURRENT_SOURCE_DIR}`
+  paths in `target_include_directories` as the source of truth. "It resolves in the
+  compiler" is not the same as "CLion/clangd resolves it."
 - **When green looks too easy, check it.** Cross-check a PASS against elapsed time
   and plausibility; confirm setup steps actually ran. A suspiciously fast pass is a
   red flag.
@@ -223,6 +249,14 @@ the whole brief.
   system-wide") — if a command's start path isn't under the project root, don't
   run it. If a workspace-internal lookup finds nothing, the answer is to ask
   where the file lives, never to widen the search outside the workspace.
+- **Search the WHOLE workspace before fetching anything from the internet.**
+  Before downloading, cloning, or re-creating any external asset (manual, PDF,
+  dataset, tarball, reference file), search the entire project root by filename
+  first — not just the subdirectory you're working in. Assets frequently live
+  in sibling submodules (a subtree-scoped search misses them). Only go to the
+  network once a whole-workspace search comes up empty. (2026-08-13: searched
+  only `scratch/.../docs/`, re-downloaded a 25 MB DR C manual that was already
+  in `cpm86-crossdev/docs/manuals/` — identical file — forcing a commit+revert.)
 - **Never use unquoted `===` in a shell command** — zsh emits `== not found` and
   *silently truncates the rest of the line*. Use `---` as a visual separator.
 - **Delete temp artifacts before regenerating them** (`rm -f /tmp/x` before the
