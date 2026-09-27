@@ -92,6 +92,10 @@ the whole brief.
   one-statement body, an identifier whose name already says it — no comment
   needed. The goal is to spare the reader reverse-engineering, not to
   paper every line.
+- **Be concise — no wordy essays or historical exposition in code comments.**
+  State WHAT and WHY in 1-3 lines. Do not narrate project history, rejected
+  alternatives, or lengthy background stories in source comments. Comments are
+  for reading the code today, not an archive of how it was developed.
 
 ## GitHub bodies
 
